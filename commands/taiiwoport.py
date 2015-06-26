@@ -195,8 +195,10 @@ class Joke(Command):
         res = requests.get("http://www.sickipedia.org/random/")
         soup = BeautifulSoup(res.text)
         joke = soup.find("section", attrs={"class": "jokeText"}).text
-        self.bot.send_Reply(message, joke)
-
+        if message.channel[0] == "C":
+            self.bot.send_PrivMsg(message.user, joke)
+        else:
+            self.bot.send_Reply(message, joke)
 
 class WYR(Command):
     callname = "wyr"
