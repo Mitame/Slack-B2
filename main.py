@@ -15,11 +15,11 @@ cmds = []
 from commands.basic import Say, Help, Die, cnJoke, Ping
 cmds.extend((Say, Help, Die, cnJoke, Ping))
 
-from commands.fun import asciiClock, cowsay, slap
-cmds.extend((asciiClock, cowsay, slap))
+from commands.fun import asciiClock, cowsay, slap, Dice
+cmds.extend((asciiClock, cowsay, slap, Dice))
 
-from commands.taiiwoport import cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke
-cmds.extend((cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke))
+from commands.taiiwoport import cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke, WYR, Fact
+cmds.extend((cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke, WYR, Fact))
 
 from commands.utils import Permission
 cmds.extend([Permission])

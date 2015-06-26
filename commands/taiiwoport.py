@@ -196,3 +196,26 @@ class Joke(Command):
         soup = BeautifulSoup(res.text)
         joke = soup.find("section", attrs={"class": "jokeText"}).text
         self.bot.send_Reply(message, joke)
+
+
+class WYR(Command):
+    callname = "wyr"
+    permissionLevel = permissionLevels.NORMAL
+
+    def on_call(self, message, *args, **kwargs):
+        res = requests.get("http://www.rrrather.com/view/"+str(random.randint(1, 40000))).text
+        soup = BeautifulSoup(res)
+        text = soup.find("head").find("title").text
+        self.bot.send_Reply(message, text)
+
+class Fact(Command):
+    callname = "fact"
+    permissionLevel = permissionLevels.NORMAL
+
+    def on_call(self, message, *args, **kwargs):
+        res = requests.get("http://randomfunfacts.com/").text
+        soup = BeautifulSoup(res)
+        text = soup.find("strong").text
+        self.bot.send_Reply(message, text)
+
+
