@@ -1,0 +1,3 @@
+[submodule "libs/cleverbot"]
+	path = libs/cleverbot
+	url = https://github.com/superboum/cleverbot
