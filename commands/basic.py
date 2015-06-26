@@ -1,6 +1,9 @@
 __author__ = 'MrMindImplosion'
 
 from commands.base import Command, permissionLevels
+import requests
+import json
+from urllib.parse import unquote
 
 class Say(Command):
     callname = "say"
@@ -28,17 +31,12 @@ class cnJoke(Command):
     callname = "cnjoke"
     permissionLevel = permissionLevels.NORMAL
 
-    def __init__(self, engine):
-        Command.__init__(self, engine)
-        self.urlopen = __import__("urllib.request", "urlopen")
-        self.jsonload = __import__("json", "loads")
-
     def on_call(self, message, *args):
-        x = self.urlopen("http://api.icndb.com/jokes/random")
-        z = str(x.read(), "utf8")
+        x = requests.get("http://api.icndb.com/jokes/random")
+        z = x.text
         try:
-            a = self.jsonload(z)
-            self.bot.sendMsg(message, a["value"]["joke"])
+            a = json.loads(z)
+            self.bot.send_Reply(message, unquote(["value"]["joke"]))
         except ValueError:
             print(z)
 
