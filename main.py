@@ -18,8 +18,8 @@ cmds.extend((Say, Help, Die, cnJoke, Ping))
 from commands.fun import asciiClock, cowsay, slap
 cmds.extend((asciiClock, cowsay, slap))
 
-from commands.taiiwoport import cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha
-cmds.extend((cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha))
+from commands.taiiwoport import cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke
+cmds.extend((cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke))
 
 from commands.utils import Permission
 cmds.extend([Permission])

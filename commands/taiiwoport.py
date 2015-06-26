@@ -187,3 +187,12 @@ class WolframAlpha(Command):
             self.bot.send_Reply(message, "Interpretation: " + interp)
             self.bot.send_Reply(message, "Answer: " + answer)
 
+class Joke(Command):
+    callname = "joke"
+    permissionLevel = permissionLevels.NORMAL
+
+    def on_call(self, message, *args, **kwargs):
+        res = requests.get("http://www.sickipedia.org/random/")
+        soup = BeautifulSoup(res.text)
+        joke = soup.find("section", attrs={"class": "jokeText"}).text
+        self.bot.send_Reply(message, joke)
