@@ -36,7 +36,7 @@ class cnJoke(Command):
         z = x.text
         try:
             a = json.loads(z)
-            self.bot.send_Reply(message, unquote(["value"]["joke"]))
+            self.bot.send_Reply(message, unquote(a["value"]["joke"]))
         except ValueError:
             print(z)
 
