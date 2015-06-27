@@ -54,7 +54,7 @@ class cowsay(Command):
                 text.append(arg)
         print("Executing %s." % ("cowsay " + " ".join(newArgs) + " " + shlex.quote(" ".join(text))))
         y = os.popen("cowsay " + " ".join(newArgs) + " " + shlex.quote(" ".join(text)))
-        self.bot.send_Reply("```" + str(y.read(), "utf8") + "```")
+        self.bot.send_Reply(message, "```" + y.read() + "```")
 
 class Dice(Command):
     callname = "r"
