@@ -497,13 +497,17 @@ class RTMHandler:
     def start(self, scanInterval=1):
         try:
             while 1:
-                self._onrecv(self.ws.recv())
+                try:
+                    self._onrecv(self.ws.recv())
 
-                # work through the message stack if it built up while waiting
-                while len(self.msgStack) != 0:
-                    self._onrecv(self.msgStack.pop())
+                    # work through the message stack if it built up while waiting
+                    while len(self.msgStack) != 0:
+                        self._onrecv(self.msgStack.pop())
 
-                time.sleep(scanInterval)
+                    time.sleep(scanInterval)
+                except TimeoutError:
+                    print("Connection lost.")
+                    break
         except KeyboardInterrupt or SystemExit:
             pass
 
