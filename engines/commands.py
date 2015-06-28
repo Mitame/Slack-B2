@@ -2,6 +2,7 @@ __author__ = "MrMindImplosion"
 
 from engines import Engine
 from bot.constants import event
+import threading
 
 
 class PermissionEngine(Engine):
@@ -66,9 +67,16 @@ class CommandsEngine(Engine):
     def __init__(self, bot, conf):
         Engine.__init__(self, bot, conf)
         self.commandPrefix = conf["command"]["commandPrefix"]
+        self.do_thread = conf["command"]["threading"]
 
         # register listener
-        self.bot.add_listener(event.message, self.on_any_message)
+        if self.do_thread:
+            print("Enabling threading...")
+            self.threads = []
+            self.bot.add_listener(event.message, self.create_message_thread)
+            self.bot.wait_for_reply = lambda self, ID=0: True  # waiting for reply causes glitches, so we're disabling it
+        else:
+            self.bot.add_listener(event.message, self.on_any_message)
 
         # create dict to hold commands
         self.commands = {}
@@ -84,6 +92,10 @@ class CommandsEngine(Engine):
             return self.spaces.CHANNEL, chat
         elif chat[0] == "G":
             return self.spaces.GROUP, chat
+
+    def create_message_thread(self, message):
+        thread = threading.Thread(target=self.on_any_message, args=(message,))
+        thread.start()
 
     def on_any_message(self, message):
         if message.channel is None or message.text is None:

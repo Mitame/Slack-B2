@@ -481,10 +481,15 @@ class RTMHandler:
             parse = msg
         self._on_any(parse)
 
+        # catch replies
+        if parse.type == None:
+            return
+
         try:
             if hasattr(parse, "message"):
                 self.handlers[parse.type](parse.message)
-            self.handlers[parse.type](parse)
+            else:
+                self.handlers[parse.type](parse)
         except ValueError:
             print("Error parsing message:", msg)
             self._on_other(parse)
