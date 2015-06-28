@@ -1,5 +1,6 @@
 __author__ = "MrMindImplosion"
 
+
 class event:
     hello = "hello"
     message = "message"
@@ -59,6 +60,7 @@ class event:
     team_migration_started = "team_migration_started"
     reply_to = "reply_to"
 
+
 class message_subtype:
     bot_message = "bot_message"
     me_message = "me_message"
@@ -83,4 +85,3 @@ class message_subtype:
     file_mention = "file_mention"
     pinned_item = "pinned_item"
     unpinned_item = "unpinned_item"
-

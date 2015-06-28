@@ -5,13 +5,14 @@ import requests
 import json
 from urllib.parse import unquote
 
+
 class Say(Command):
     callname = "say"
     permissionLevel = permissionLevels.ADMIN
 
     def on_call(self, message, *args, **kwargs):
-        print(" ".join(args))
         self.bot.send_Reply(message, " ".join(args))
+
 
 class Ping(Command):
     callname = "ping"
@@ -20,12 +21,14 @@ class Ping(Command):
     def on_call(self, message, *args, **kwargs):
         self.bot.send_Reply(message.user, "PONG")
 
+
 class Die(Command):
     callname = "die"
     permissionLevel = permissionLevels.BOT_OWNER
 
     def on_call(self, event, *args):
         raise SystemExit
+
 
 class cnJoke(Command):
     callname = "cnjoke"
@@ -38,12 +41,14 @@ class cnJoke(Command):
             a = json.loads(z)
             self.bot.send_Reply(message, unquote(a["value"]["joke"]))
         except ValueError:
-            print(z)
+            pass
 
     # this is useless right now
     def on_fail(self, message):
-        self.bot.send_PrivMsg(message.user,\
-        "You failed to type the command correctly puny human. \nChuck Norris will roundhouse kick you in the face shortly."% self.callName+" "+str(self.arguments))
+        self.bot.send_PrivMsg(message.user,
+                              "You failed to type the command correctly puny human." +
+                              "\nChuck Norris will roundhouse kick you in the face shortly." % self.callName+" " +
+                              str(self.arguments))
 
 
 class Help(Command):
@@ -66,4 +71,3 @@ class Help(Command):
         text += "-------------------------------"
 
         self.bot.send_PrivMsg(message.user, text)
-

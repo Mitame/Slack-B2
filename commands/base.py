@@ -4,6 +4,7 @@ from engines.commands import PermissionEngine
 
 permissionLevels = PermissionEngine.levels
 
+
 class Command:
     callname = "command"
     permissionLevel = permissionLevels.NONE
@@ -17,4 +18,3 @@ class Command:
 
     def on_call(self, message, *args, **kwargs):
         pass
-

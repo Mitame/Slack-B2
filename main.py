@@ -6,7 +6,7 @@ from config import getConfiguration
 
 newbot = Bot(getConfiguration("bot"))
 
-newbot.loadEngine(censorship.CensorshipEngine)
+# newbot.loadEngine(censorship.CensorshipEngine)
 newbot.loadEngine(commands.PermissionEngine)
 newbot.loadEngine(commands.CommandsEngine)
 
@@ -18,11 +18,11 @@ cmds.extend((Say, Help, Die, cnJoke, Ping))
 from commands.fun import asciiClock, cowsay, slap, Dice
 cmds.extend((asciiClock, cowsay, slap, Dice))
 
-from commands.taiiwoport import cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke, WYR, Fact
-cmds.extend((cleverbot, findIP, FindPhone, Love, Moustache, WolframAlpha, Joke, WYR, Fact))
+from commands.taiiwoport import cleverbot, findIP, FindPhone, Love, Moustache, WolframAlphaPlain, WolframAlphaImage, Joke, WYR, Fact
+cmds.extend((cleverbot, findIP, FindPhone, Love, Moustache, WolframAlphaPlain, WolframAlphaImage, Joke, WYR, Fact))
 
-from commands.utils import Permission
-cmds.extend([Permission])
+from commands.utils import Permission, DeleteLastMessage
+cmds.extend((Permission, DeleteLastMessage))
 
 for cmd in cmds:
     cmd(newbot.getEngine("commands"))

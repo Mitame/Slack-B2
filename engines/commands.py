@@ -3,6 +3,7 @@ __author__ = "MrMindImplosion"
 from engines import Engine
 from bot.constants import event
 
+
 class PermissionEngine(Engine):
     name = "permission"
     version = 0.1
@@ -86,7 +87,6 @@ class CommandsEngine(Engine):
 
     def on_any_message(self, message):
         if message.channel is None or message.text is None:
-            print(message.raw)
             return
 
         space = self.get_space(message)[0]
@@ -99,8 +99,6 @@ class CommandsEngine(Engine):
             self.on_group_message(message)
 
     def on_channel_message(self, message):
-        channel = message.channel
-
         if message.text == "":
             return
 
@@ -110,8 +108,6 @@ class CommandsEngine(Engine):
                 return self.doCommand(self.commands[command], message)
 
     def on_group_message(self, message):
-        group = message.channel
-
         # catch empty messages
         if message.text == "":
             return
@@ -122,8 +118,6 @@ class CommandsEngine(Engine):
                 return self.doCommand(self.commands[command], message)
 
     def on_direct_message(self, message):
-        dm = message.channel
-
         if message.text == "":
             self.bot.send_Reply(message, "No command specified")
             return False, "no command"
@@ -152,14 +146,10 @@ class CommandsEngine(Engine):
             return False, ("private", "command is not valid in this space")
 
         # check command is allowed to be used by the sender
-        print(message.user, self.perms.get_permission_level(message.user))
         if command["command"].permissionLevel > self.perms.get_permission_level(message.user):
-            print(command["command"].permissionLevel, self.perms.get_permission_level(message.user))
             return False, ("private", "You are not permitted to run the '%s' command." % command["command"].callname)
 
         args = message.text.split(" ")[1:]
         args.extend(command["args"])
 
         return command["command"].on_call(message, *args, **command["kwargs"])
-
-

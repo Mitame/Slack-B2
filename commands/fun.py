@@ -7,7 +7,6 @@ import random
 from commands.base import Command, permissionLevels
 
 
-
 class slap(Command):
     permissionLevel = permissionLevels.ADMIN
     callname = "slap"
@@ -22,7 +21,6 @@ class asciiClock(Command):
 
     def on_call(self, message, *args, **kwargs):
         font = pyfiglet.Figlet()
-        print(str(time.ctime()).split(" "))
         x = font.renderText(str(time.ctime()).split(" ")[3])
         self.bot.send_Reply(message, "```"+x+"```")
 
@@ -42,7 +40,7 @@ class cowsay(Command):
             arg = args.pop(0)
             if arg[0:2] in self.withArguments:
                 newArgs.append(arg[0:2])
-                if arg not in self.withArguments: #check for arguments without space
+                if arg not in self.withArguments:  # check for arguments without space
                     newArgs.append(arg[2:])
                 else:
                     newArgs.append(args.pop(0))
@@ -55,6 +53,7 @@ class cowsay(Command):
         print("Executing %s." % ("cowsay " + " ".join(newArgs) + " " + shlex.quote(" ".join(text))))
         y = os.popen("cowsay " + " ".join(newArgs) + " " + shlex.quote(" ".join(text)))
         self.bot.send_Reply(message, "```" + y.read() + "```")
+
 
 class Dice(Command):
     callname = "r"

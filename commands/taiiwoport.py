@@ -17,6 +17,7 @@ import random
 
 from bs4 import BeautifulSoup
 
+
 class cleverbot(Command):
     callname = "cb"
     permissionLevel = permissionLevels.NORMAL
@@ -37,6 +38,7 @@ class cleverbot(Command):
         reply = self.cleverbot.Ask(query)
         self.bot.send_Reply(message, reply)
 
+
 class findIP(Command):
     callname = "findip"
     permissionLevel = permissionLevels.NORMAL
@@ -44,12 +46,10 @@ class findIP(Command):
     def on_call(self, message, *args, **kwargs):
         query = " ".join(args)
 
-        #get link from slack wrappings
-        #<http:/home.mrmindimplosion.co.uk|home.mrmindimplosion.co.uk>
+        # get link from slack wrappings
+        # <http:/home.mrmindimplosion.co.uk|home.mrmindimplosion.co.uk>
         matches = re.search("(?<=//)[^\|/]*", query)
-        print(matches)
         if matches:
-            print(matches.group(0))
             self.on_call(message, matches.group(0))
             return
 
@@ -57,19 +57,19 @@ class findIP(Command):
         try:
             whois = requests.get('http://ip-api.com/json/' + query, {"fields": 65535})
             answ = json.loads(whois.text)
-        except NotImplementedError: # Don't know which error to catch here
+        except NotImplementedError:  # Don't know which error to catch here
             self.bot.send_Reply(message, "API Error.")
             return
 
         try:
-            if answ == False: # Closest I could find to checking for null
+            if not answ:  # Closest I could find to checking for null
                 self.bot.send_Reply(message, 'General JSON failure.')
                 return
-        except NotImplementedError: # don't know which error to catch here.
+        except NotImplementedError:  # don't know which error to catch here.
             pass        
         
         output = ""
-        if answ['status']  == 'success':
+        if answ['status'] == 'success':
                 
             # prepare output     
             output += 'Lookup for IP: ' + answ['query'] + ' (' + answ['reverse'] + ')\n'
@@ -82,6 +82,7 @@ class findIP(Command):
         
         # output
         self.bot.send_Reply(message, output)
+
 
 class FindPhone(Command):
     callname = "findphone"
@@ -101,14 +102,14 @@ class FindPhone(Command):
                                                   (This command only seems to work with american numbers)")
                 parsedjson = json.loads(res.text)
 
-                tosend  = str(parsedjson['name']) + "\n"
+                tosend = str(parsedjson['name']) + "\n"
                 tosend += str(parsedjson['updated']) + "\n"
                 tosend += str(parsedjson['price']) + "\n"
                 tosend += str(parsedjson['created'])
 
                 self.bot.send_Reply(message, tosend)
         except ValueError as a:
-            print(a)
+            pass
 
 # shodan api is broken so this is disabled
 # class LocateIP(Command):
@@ -138,6 +139,7 @@ class FindPhone(Command):
 #
 #         self.bot.send_Reply(message, "\n".join(output))
 
+
 class Love(Command):
     callname = "love"
     permissionLevel = permissionLevels.NORMAL
@@ -161,12 +163,13 @@ class Moustache(Command):
         images = json.loads(res.text)
         n = random.randint(0, len(images["responseData"]["results"]) - 1)
         image = images["responseData"]["results"][n]["url"]
-        print(image)
+
 
         url = "https://mustachify.me/?src="+quote(image)
         self.bot.send_Reply(message, url)
 
-class WolframAlpha(Command):
+
+class WolframAlphaImage(Command):
     callname = "wa"
     permissionLevel = permissionLevels.NORMAL
 
@@ -181,11 +184,34 @@ class WolframAlpha(Command):
         pods = soup.find_all("pod")
 
         if pods and len(pods) >= 2:
-            interp = pods[0].subpod.img["src"]
-            answer = pods[1].subpod.img["src"]
+            interp = pods[0].subpod
+            answer = pods[1].subpod
 
-            self.bot.send_Reply(message, "Interpretation: " + interp)
-            self.bot.send_Reply(message, "Answer: " + answer)
+            self.bot.send_Reply(message, "Interpretation: \n" + interp.img["src"])
+            self.bot.send_Reply(message, "Answer: \n" + answer.img["src"])
+
+
+class WolframAlphaPlain(Command):
+    callname = "waplain"
+    permissionLevel = permissionLevels.NORMAL
+
+    def on_call(self, message, *args, **kwargs):
+        query = {
+                 'input': " ".join(args),
+                 'appid': 'QPEPAR-TKWEJ3W7VA'
+                }
+
+        res = requests.get("http://api.wolframalpha.com/v2/query", query)
+        soup = BeautifulSoup(res.text)
+        pods = soup.find_all("pod")
+
+        if pods and len(pods) >= 2:
+            interp = pods[0].subpod
+            answer = pods[1].subpod
+
+            self.bot.send_Reply(message, "Interpretation: " + interp.plaintext.text)
+            self.bot.send_Reply(message, "Answer: " + answer.plaintext.text)
+
 
 class Joke(Command):
     callname = "joke"
@@ -200,6 +226,7 @@ class Joke(Command):
         else:
             self.bot.send_Reply(message, joke)
 
+
 class WYR(Command):
     callname = "wyr"
     permissionLevel = permissionLevels.NORMAL
@@ -210,6 +237,7 @@ class WYR(Command):
         text = soup.find("head").find("title").text
         self.bot.send_Reply(message, text)
 
+
 class Fact(Command):
     callname = "fact"
     permissionLevel = permissionLevels.NORMAL
@@ -219,5 +247,3 @@ class Fact(Command):
         soup = BeautifulSoup(res)
         text = soup.find("strong").text
         self.bot.send_Reply(message, text)
-
-

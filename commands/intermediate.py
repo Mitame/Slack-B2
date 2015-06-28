@@ -2,16 +2,17 @@ __author__ = 'leviwright'
 
 from commands.base import Command, permissionLevels
 
-class vote(Command):
+
+class Vote(Command):
     """ DON'T USE THIS YET"""
-    arguments = ["str","str"]
+    arguments = ["str", "str"]
     permissionLevel = -1
     permitExtraArgs = True
     manArgCheck = True
     defaultArgs = []
     callName = "vote"
 
-    class poll():
+    class poll:
         def __init__(self, *args):
             self.votes = {}
             self.voteids = {}
@@ -20,11 +21,11 @@ class vote(Command):
                 self.votes[vote] = 0
                 self.voteids[args.index(vote)] = vote
 
-        def getVote(self, id, data="name"):
+        def getVote(self, ID, data="name"):
             if data == "name":
-                return self.voteids[id]
+                return self.voteids[ID]
             elif data == "score":
-                return self.votes[self.voteids[id]]
+                return self.votes[self.voteids[ID]]
 
     def __init__(self, bot):
         Command.__init__(self, bot)
@@ -57,7 +58,7 @@ class vote(Command):
 
         curpoll = self.polls[self.currentPoll]
         curpoll.votes[curpoll.voteids[int(args[0])]] += 1
-        alert = ("%s voted for '" +self.polls[self.currentPoll].voteids[int(args[0])]+"'!")%event.source.nick
+        alert = ("%s voted for '" + self.polls[self.currentPoll].voteids[int(args[0])]+"'!") % event.source.nick
 
         curpoll.voted.append(event.source.nick)
         self.bot.sendPubMsg(event, alert)
@@ -77,7 +78,8 @@ class vote(Command):
             else:
                 return False
 
-    def checkArgs(self, event, *args):
+    @staticmethod
+    def checkArgs(*args):
         if len(args) == 0:
             return 0
         return True
@@ -88,24 +90,23 @@ class vote(Command):
             return
 
         self.bot.sendPubMsg(event, "---Current poll results---")
-        for id in self.polls[self.currentPoll].voteids:
-            x = self.polls[self.currentPoll].voteids[id]
+        for ID in self.polls[self.currentPoll].voteids:
+            x = self.polls[self.currentPoll].voteids[ID]
 
             self.bot.sendPubMsg(event, ("    '%s': " + str(self.polls[self.currentPoll].votes[x])+" votes.") % x)
         self.bot.sendPubMsg(event, "--------------------------")
 
     def closePoll(self, event, name):
         self.pubMsg(event, "The voting has now ended. The final results are:")
-        for id in self.polls[self.currentPoll].voteids:
-            x = self.polls[self.currentPoll].voteids[id]
+        for ID in self.polls[self.currentPoll].voteids:
+            x = self.polls[self.currentPoll].voteids[ID]
 
-            self.bot.sendPubMsg(event, ("    '%s': "+str(self.polls[self.currentPoll].votes[x])+" votes.") % x )
+            self.bot.sendPubMsg(event, ("    '%s': "+str(self.polls[self.currentPoll].votes[x])+" votes.") % x)
         self.bot.sendPubMsg(event, "--------------------------")
 
         self.currentPoll = ""
 
     def on_call(self, event, *args):
-        print(args)
         if args[0] == "create":
             args = " ".join(args[1:]).split(", ")
             self.createPoll(event, args[0], args[1], *args[2:])

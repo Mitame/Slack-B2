@@ -3,6 +3,7 @@ __author__ = "MrMindImplosion"
 from engines import Engine
 from bot.constants import event, message_subtype
 
+
 class CensorshipEngine(Engine):
     name = "censorship"
     version = 0.1
@@ -10,6 +11,8 @@ class CensorshipEngine(Engine):
     depends = []
     supplies = []
     conflicts = []
+
+    user = "user"
 
     def __init__(self, bot, conf):
         """
@@ -28,5 +31,4 @@ class CensorshipEngine(Engine):
             return
 
         if message.subtype == message_subtype.message_deleted:
-            self.bot.send_PrivMsg(self.bot.getUserFromName("levi"), "A message was deleted from %s." % message.channel)
-
+            self.bot.send_PrivMsg(self.bot.getUserFromName(self.user), "A message was deleted from %s." % message.channel)

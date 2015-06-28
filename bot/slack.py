@@ -4,6 +4,7 @@ import time
 import websocket
 import json
 
+
 class RTMHandler:
     events = ["hello", "message", "user_typing", "channel_marked",
               "channel_created", "channel_joined", "channel_left", "channel_deleted",
@@ -488,7 +489,8 @@ class RTMHandler:
             print("Error parsing message:", msg)
             self._on_other(parse)
 
-    def _parseMsg(self, msg):
+    @staticmethod
+    def _parseMsg(msg):
         return Message(json.loads(msg))
 
     def _recv(self):
@@ -512,13 +514,14 @@ class RTMHandler:
             pass
 
 
-class dictObj():
+class dictObj:
     def __init__(self, Dict):
         for a, b in Dict.items():
             if isinstance(b, (list, tuple)):
                 setattr(self, a, [type(self)(x) if isinstance(x, dict) else x for x in b])
             else:
-                setattr(self, a, type(self)(b) if isinstance(b,dict) else b)
+                setattr(self, a, type(self)(b) if isinstance(b, dict) else b)
+
 
 class Message(dictObj):
     type = None
@@ -560,6 +563,7 @@ def getAllUsers(slack):
 
     return userObjs
 
+
 def getAllGroups(slack):
     groupObjs = {}
     users = slack.groups.list().body["groups"]
@@ -567,6 +571,7 @@ def getAllGroups(slack):
         groupObjs[x["id"]] = Group(x)
 
     return groupObjs
+
 
 def getAllChannels(slack):
     channelObjs = {}

@@ -5,6 +5,7 @@ from bot.slack import RTMHandler, getAllChannels, getAllGroups, getAllUsers
 from slacker import Slacker
 from config import getConfiguration
 
+
 class Bot(RTMHandler):
     """A slack bot containing calls for Real Time Messaging."""
 
@@ -32,7 +33,6 @@ class Bot(RTMHandler):
         :type message str
         """
 
-        print(user)
         if type(user) == str:
             user = self.getObjFromID(user)
 
@@ -85,15 +85,15 @@ class Bot(RTMHandler):
         :type name str
         """
 
-        for group in self.group.values():
+        for group in self.groups.values():
             if group.name == name:
-                return  group
+                return group
         else:
             return False
 
     def getObjFromID(self, ID):
         """Return the obj for a channel/group/user given it's ID
-        :type name str
+        :type ID str
         """
         if ID[0] == "U":
             "found a user"
@@ -144,5 +144,3 @@ class Bot(RTMHandler):
             raise IndexError('%s has not been supplied.\
                               Check your configurations to make sure an engine is being loaded that supplies %s.' %
                              (supplies, supplies))
-
-
