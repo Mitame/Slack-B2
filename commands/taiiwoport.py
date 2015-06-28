@@ -35,7 +35,7 @@ class cleverbot(Command):
                 return
 
         query = " ".join(args)
-        reply = self.cleverbot.Ask(query)
+        reply = self.cleverbot.ask(query)
         self.bot.send_Reply(message, reply)
 
 
